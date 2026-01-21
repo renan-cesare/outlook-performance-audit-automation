@@ -49,24 +49,23 @@ Este projeto resolve esse problema fornecendo:
 ## 🧱 Estrutura do Projeto
 
 ```text
-outlook-performance-audit-automation/
+outlook-structured-operations-audit-automation/
   main.py
   config.example.json
   requirements.txt
   README.md
+  .gitignore
   templates/
     email_body.html
   src/
-    performance_audit/
+    outlook_audit/
       __init__.py
       config.py
       dispatch.py
       followup.py
       outlook_client.py
       history_store.py
-      excel_utils.py
-      columns.py
-      token_utils.py
+      file_lock.py
       logging_utils.py
 ```
 
