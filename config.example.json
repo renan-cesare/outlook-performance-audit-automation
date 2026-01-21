@@ -1,1 +1,39 @@
+{
+  "project": {
+    "name": "outlook-performance-audit-automation",
+    "month_ref": "2025-01"
+  },
+  "paths": {
+    "auditoria_xlsx": "data/Operacoes_para_auditar.xlsx",
+    "profissionais_xlsx": "data/Base_Profissionais.xlsx",
+    "history_xlsx": "data/history_performance.xlsx",
+    "email_body_html": "templates/email_body.html"
+  },
+  "outlook": {
+    "from_smtp": "riscos@empresa.com.br",
+    "store_hint": "riscos",
+    "use_sent_folder_override": true
+  },
+  "behavior": {
+    "send_mode": "display",
+    "force_send": true,
+    "delay_between_emails_sec": 2.5,
+    "retry_send": 2,
+    "max_emails": null
+  },
+  "signature": {
+    "use_local_outlook_signature": true,
+    "signature_windows_name": "Risco - Empresa"
+  },
+  "cc_rules": {
+    "skip_cc_if_leader_in_codes": ["A733", "A981", "A65992", "A26223"]
+  },
+  "email": {
+    "subject_template": "Auditoria de Desempenho – Cliente {nome_cliente} – {cod_cliente}",
+    "sla_business_days": 3
+  },
+  "history": {
+    "sheet_name": "Performance_Audit_History"
+  }
+}
 
