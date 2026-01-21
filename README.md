@@ -1,4 +1,4 @@
-# outlook-performance-audit-automation
+# Outlook Performance Audit Automation
 
 Automação (sanitizada) para **envio em massa** e **acompanhamento (follow-up)** de auditorias de desempenho de carteiras utilizando **Microsoft Outlook (COM / pywin32)** e **Excel**.
 
