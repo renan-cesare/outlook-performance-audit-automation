@@ -1,203 +1,150 @@
 # Outlook Performance Audit Automation
 
-Automação (sanitizada) para **envio em massa** e **acompanhamento (follow-up)** de auditorias de desempenho de carteiras utilizando **Microsoft Outlook (COM / pywin32)** e **Excel**.
+Automação em Python para **auditoria de desempenho de carteiras via Outlook e Excel**, com **envio em massa de e-mails**, **histórico de execuções**, **controle de follow-up** e **registro consolidado para acompanhamento operacional**.
 
-> Este projeto é uma adaptação profissional e sanitizada de uma automação real utilizada em ambiente corporativo.
-> Não contém dados reais, e-mails reais, clientes reais ou regras proprietárias.
-
----
-
-## 📌 Visão Geral
-
-Em muitos ambientes corporativos, processos de auditoria e acompanhamento dependem de:
-
-* Envio manual de e-mails
-* Controle manual de quem respondeu e quem não respondeu
-* Reenvio manual de cobranças
-* Atualização manual de planilhas de controle
-
-Este projeto resolve esse problema fornecendo:
-
-* Envio em massa automatizado via Outlook
-* Geração de token único por registro (rastreabilidade)
-* Registro centralizado de histórico em Excel
-* Rotina de follow-up para identificar respostas e sinalizar pendências
+> **English (short):** Python automation for performance audit workflows using Outlook and Excel, including bulk email dispatch, execution history, and automated follow-up.
 
 ---
 
-## 🎯 O que o projeto faz
+## Principais recursos
 
-* Envia e-mails de auditoria em massa via Microsoft Outlook
-* Gera um token único por registro auditado
-* Registra cada envio em uma planilha de histórico (Excel), incluindo:
+* Automação de envio de e-mails via **Outlook (COM automation)**
+* Geração dinâmica de mensagens a partir de **templates HTML**
+* Processamento de bases em **Excel**
+* Envio em massa com:
 
-  * Data/hora
-  * Cliente
-  * Assessor
-  * E-mails
-  * Token
-  * Status
-  * IDs do Outlook (quando disponíveis)
-* Possui rotina de follow-up que:
+  * controle por assessor/carteira
+  * histórico de execuções
+  * identificador único por envio
+* **Follow-up automático** baseado em histórico (e-mails sem resposta)
+* Registro consolidado para auditoria e rastreabilidade
+* Separação clara entre:
 
-  * Varre a caixa de entrada
-  * Procura respostas pelo token
-  * Marca registros como **RESPONDIDO** ou **COBRADO**
+  * dados
+  * templates
+  * lógica de negócio
 
 ---
 
-## 🧱 Estrutura do Projeto
+## Contexto
+
+Em rotinas de **risco, compliance e backoffice**, auditorias de desempenho exigem:
+
+* contato recorrente com assessores ou responsáveis
+* envio estruturado de informações
+* controle de quem respondeu ou não
+* histórico auditável das interações
+
+Este projeto automatiza esse fluxo operacional, reduzindo esforço manual e garantindo **padronização, rastreabilidade e controle**.
+
+---
+
+## Aviso importante (uso autorizado)
+
+Este repositório é apresentado como **exemplo técnico/portfólio**.
+
+* Utilize apenas **ambientes e contas autorizadas**
+* Não publique dados reais, e-mails corporativos ou informações sensíveis
+* Respeite políticas internas, LGPD e regras de uso do Outlook
+
+---
+
+## Estrutura do projeto
 
 ```text
-outlook-structured-operations-audit-automation/
-  main.py
-  config.example.json
-  requirements.txt
-  README.md
-  .gitignore
-  templates/
-    email_body.html
-  src/
-    outlook_audit/
-      __init__.py
-      config.py
-      dispatch.py
-      followup.py
-      outlook_client.py
-      history_store.py
-      file_lock.py
-      logging_utils.py
+.
+├─ src/
+│  └─ performance_audit/
+│     ├─ __init__.py
+│     ├─ app.py
+│     ├─ followup.py
+│     └─ outlook_client.py
+├─ templates/
+│  └─ email_body.html
+├─ config.example.json
+├─ main.py
+├─ requirements.txt
+├─ LICENSE
+└─ README.md
 ```
 
 ---
 
-## ⚙️ Como o Processo Funciona (Visão Conceitual)
+## Requisitos
 
-1. O sistema carrega:
+* Python 3.10+
+* **Windows**
+* Microsoft Outlook instalado e configurado
 
-   * Uma planilha com os clientes/operações a serem auditados
-   * Uma planilha com a base de profissionais (assessores e líderes)
-
-2. Para cada registro:
-
-   * Um token único é gerado
-   * Um e-mail é montado e enviado (ou exibido para conferência)
-   * O envio é registrado na planilha de histórico
-
-3. No modo de follow-up:
-
-   * O sistema varre a Inbox do Outlook
-   * Procura respostas contendo o token
-   * Atualiza o histórico:
-
-     * Marcando como **RESPONDIDO**
-     * Ou como **COBRADO** quando não há resposta
+> Este projeto utiliza automação COM, sendo compatível apenas com ambiente Windows.
 
 ---
 
-## 📄 Configuração
-
-Toda a configuração é feita via arquivo JSON.
-
-Use o arquivo de exemplo:
+## Instalação
 
 ```bash
-config.example.json
-```
+python -m venv .venv
 
-Crie uma cópia local (não versionada):
+# Windows
+.venv\Scripts\activate
 
-```bash
-config.json
-```
-
-E ajuste:
-
-* Caminhos das planilhas
-* E-mail remetente do Outlook
-* Modo de envio (`display` ou `send`)
-
-> ⚠️ O repositório não inclui arquivos reais de dados nem planilhas reais.
-
----
-
-## ▶️ Como Executar
-
-### 1) Instalar dependências
-
-```bash
 pip install -r requirements.txt
 ```
 
-### 2) Envio das auditorias (modo seguro primeiro)
+---
+
+## Configuração
+
+Crie um arquivo local de configuração:
 
 ```bash
-python main.py --config config.json dispatch
+copy config.example.json config.json
 ```
 
-> Recomenda-se começar com `send_mode = "display"` para validar os e-mails antes do envio real.
+Campos principais do `config.json` incluem:
 
-### 3) Rodar o follow-up
+* caminhos de arquivos Excel
+* parâmetros de envio
+* controles de follow-up
+* opções de execução
+
+> O arquivo `config.json` deve permanecer fora do versionamento.
+
+---
+
+## Execução
 
 ```bash
-python main.py --config config.json followup
+python main.py
 ```
 
----
+O processo:
 
-## 📊 Arquivos de Dados
-
-O projeto espera planilhas Excel contendo:
-
-* Base de clientes/operações a serem auditadas
-* Base de profissionais (assessores / líderes)
-* Base de histórico (gerada automaticamente)
-
-Esses arquivos **não fazem parte do repositório** por motivos de confidencialidade.
+* lê a base em Excel
+* envia os e-mails conforme regras definidas
+* registra o histórico de envios
+* executa follow-up automático quando aplicável
 
 ---
 
-## 🔐 Segurança e Privacidade
+## Saídas geradas
 
-* Nenhuma credencial é armazenada no projeto
-* A integração com Outlook é feita via cliente local (COM)
-* Este repositório não contém:
-
-  * Dados reais de clientes
-  * Dados operacionais reais
-  * Estruturas internas de empresas
-
-Este código é destinado a **portfólio, estudo e referência técnica**.
+* Histórico consolidado de envios
+* Controle de follow-up
+* Evidências para auditoria operacional
 
 ---
 
-## ⚠️ Limitações
+## Sanitização de dados
 
-* Funciona apenas em Windows
-* Requer Microsoft Outlook instalado e configurado
-* Utiliza Excel como base de persistência (não usa banco de dados)
-* A identificação de respostas depende da consistência da caixa de e-mail
+Este repositório **não contém dados reais**.
 
----
-
-## 🧠 Filosofia do Projeto
-
-Este projeto foi desenhado para:
-
-* Refletir restrições reais de ambientes corporativos
-* Priorizar robustez e rastreabilidade
-* Integrar-se ao ecossistema existente (Outlook + Excel)
-* Ser evoluído no futuro para banco de dados e dashboards, se necessário
+* Bases Excel reais devem permanecer fora do Git
+* Templates HTML podem ser versionados normalmente
+* Identificadores sensíveis são gerados apenas em tempo de execução
 
 ---
 
-## 📌 Aviso Legal
-
-Este projeto é uma adaptação sanitizada de uma automação corporativa real.
-Ele não representa nenhuma empresa, cliente, produto ou processo específico.
-
----
-
-## 📜 Licença
+## Licença
 
 MIT
